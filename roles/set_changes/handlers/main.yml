@@ -1,0 +1,11 @@
+---
+# handlers file for set_changes
+- name:         Restart sshd
+  service:
+    name:       sshd
+    state:      restarted
+
+- name:         Restart service firewalld
+  service:
+    name:       firewalld
+    state:      restarted

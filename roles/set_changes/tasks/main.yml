@@ -1,0 +1,28 @@
+---
+# tasks file for set_changes
+- name:             Copy sshd_config file
+  copy:
+    src:            /etc/ssh/sshd_config.backup
+    dest:           /etc/ssh/sshd_config
+    remote_src:     yes
+    owner:          root
+    group:          root
+    mode:           '0600'
+  notify:           Restart sshd
+
+- name:             Open port 90-100
+  firewalld:
+    port:           "{{ item|int }}/tcp"
+    permanent:      yes
+    immediate:      yes
+    state:          enabled
+  with_sequence:    start=90 end=100
+  notify:           Restart service firewalld
+
+- name:             Copy file with mkdir command
+  copy:
+    src:            file_test.sh
+    dest:           /var/www/html
+    owner:          root
+    group:          root
+    mode:           '0777'
