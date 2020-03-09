@@ -1,0 +1,43 @@
+---
+# vars file for config_ssh
+sshd_logon_banner: |
+      ###############################################################################
+      #                   ___    _   _______ ________  __    ______                 #
+      #                  /   |  / | / / ___//  _/ __ )/ /   / ____/                 #
+      #                 / /| | /  |/ /\__ \ / // __  / /   / __/                    #
+      #                / ___ |/ /|  /___/ // // /_/ / /___/ /___                    #
+      #               /_/  |_/_/ |_//____/___/_____/_____/_____/                    #
+      #                                                                             #
+      #                             AUTHORIZED USE ONLY                             #
+      #                                                                             #
+      #                           THIS SYSTEM IS MONITORED                          #
+      #                                                                             #
+      #                     UNAUTHORIZED USE STRICTLY PROHIBITED                    #
+      ###############################################################################
+sshd_config_lines:
+  - regexp: ^#?PermitEmptyPasswords
+    line: PermitEmptyPasswords no
+
+  - regexp: (?i)^#?protocol
+    line: Protocol 2
+
+  - regexp: (?i)^#?x11forwarding
+    line: X11Forwarding yes
+
+  - regexp: ^#?Banner
+    line: Banner /etc/issue
+
+  - regexp: ^#?permituserenvironment
+    line: permituserenvironment no
+
+  - regexp: (?i)^#?Ciphers
+    line: Ciphers aes128-ctr,aes192-ctr,aes256-ctr
+
+  - regexp: ^#?ClientAliveInterval
+    line: ClientAliveInterval 600
+
+  - regexp: ^#?IgnoreRhosts
+    line: IgnoreRhosts yes
+
+  - regexp: ^#?PermitRootLogin
+    line: PermitRootLogin no

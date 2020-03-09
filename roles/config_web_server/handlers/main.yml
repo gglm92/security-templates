@@ -1,0 +1,11 @@
+---
+# handlers file for config_web_server
+- name:                   Start http service
+  service:
+    name:                 httpd
+    state:                started
+
+- name:                   Restart service firewalld
+  service:
+    name:                 firewalld
+    state:                restarted

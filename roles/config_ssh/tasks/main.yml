@@ -1,0 +1,22 @@
+---
+# tasks file for config_ssh
+- name:           Config ssh settings
+  lineinfile:
+    state:        present
+    dest:         /etc/ssh/sshd_config
+    line:         "{{ item.line }}"
+    regexp:       "{{ item.regexp }}"
+    validate:     /usr/sbin/sshd -tf %s
+  with_items:     "{{ sshd_config_lines }}"
+  notify:         restart sshd
+
+- name:           Copy ssh logon banner
+  copy:
+    content:      "{{ sshd_logon_banner }}"
+    dest:         "{{ item }}"
+    owner:        root
+    group:        root
+    mode:         0644
+  with_items:
+      - /etc/issue
+      - /etc/issue.net

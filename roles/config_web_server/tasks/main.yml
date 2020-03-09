@@ -1,0 +1,23 @@
+---
+# tasks file for config_web_server
+- name:                   Install http service 
+  yum:
+    name:                 httpd
+    state:                latest
+  notify:                 Start http service
+
+- name:                   Close ports 80-100
+  firewalld:
+    port:                 "{{ item|int }}/tcp"
+    permanent:            yes
+    immediate:            yes
+    state:                disabled
+  with_sequence:          start=80 end=100
+  notify:                 Restart service firewalld
+
+- name:                   Open port 80
+  firewalld:
+    port:                 80/tcp
+    permanent:            yes
+    immediate:            yes
+    state:                enabled
