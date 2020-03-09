@@ -1,0 +1,29 @@
+---
+# vars file for find_vulnerabilities
+sshd_config_lines:
+  - regexp: ^PermitEmptyPasswords no
+    line: PermitEmptyPasswords no
+
+  - regexp: (?i)^protocol 2
+    line: Protocol 2
+
+  - regexp: (?i)^x11forwarding yes
+    line: X11Forwarding yes
+
+  - regexp: ^permituserenvironment no
+    line: permituserenvironment no
+
+  - regexp: (?i)^Ciphers aes128-ctr,aes192-ctr,aes256-ctr
+    line: Ciphers aes128-ctr,aes192-ctr,aes256-ctr
+
+  - regexp: ^ClientAliveInterval 600
+    line: ClientAliveInterval 600
+
+  - regexp: ^IgnoreRhosts yes
+    line: IgnoreRhosts yes
+
+  - regexp: ^PermitRootLogin no
+    line: PermitRootLogin no
+
+emails:
+  - glopez@gbm.net

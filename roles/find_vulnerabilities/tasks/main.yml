@@ -1,0 +1,66 @@
+---
+# tasks file for find_vulnerabilities
+- name:               Look for suspicious files
+  find:
+    path:             "{{ search_path | default('/var/www') }}"
+    recurse:          yes
+    follow:           yes
+    file_type:        file
+    hidden:           yes
+    contains:         '(passthru|exec|eval|shell_exec|assert|str_rot13|system|phpinfo|base64_decode|chmod|mkdir|fopen|fclose|readfile)'
+  register:           suspicious_files
+
+- name:               Look for recently created files
+  find:
+    path:             "{{ search_path | default('/var/www') }}"
+    recurse:          yes
+    follow:           yes
+    file_type:        file
+    age:              "{{ file_age | default('-7d') }}"
+  register:           recently_created_files
+
+- name:               Make sure ssh politics are configured
+  lineinfile:
+    path:             /etc/ssh/sshd_config
+    state:            present
+    line:             "{{ item.line }}"
+    regexp:           "{{ item.regexp }}"
+  with_items:         "{{ sshd_config_lines }}"
+  check_mode:         yes
+  register:           ssh_configurations
+
+- name:               Close ports 80-100
+  firewalld:
+    port:             "{{ item|int }}/tcp"
+    permanent:        yes
+    immediate:        yes
+    state:            disabled
+  with_sequence:      start=81 end=100
+  check_mode:         yes
+  register:           open_ports
+
+- name:
+  debug:
+    msg:              "{{ open_ports }}"
+
+- name:               Write output
+  template:
+    src:              "report.j2"
+    dest:             "{{ inventory_hostname }}-{{ ansible_all_ipv4_addresses[0] }}.md"
+  become:             no
+  delegate_to:        localhost
+
+- name:               Sending an e-mail with report
+  mail:
+    host:             smtp.office365.com
+    port:             587
+    username:         glopez@gbm.net
+    password:         "{{ my_password }}"
+    from:             glopez@gbm.net
+    to:               "{{ emails }}"
+    subject:          Ansible-report
+    body:             System {{ ansible_hostname }} has been successfully reviewed.
+    attach:
+    - "{{ inventory_hostname }}-{{ ansible_all_ipv4_addresses[0] }}.md"
+    secure:           starttls
+  delegate_to:        localhost
