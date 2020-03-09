@@ -47,6 +47,7 @@
   template:
     src:              "report.j2"
     dest:             /tmp/{{ inventory_hostname }}-{{ ansible_all_ipv4_addresses[0] }}.md
+    mode:             0777
   become:             no
   delegate_to:        localhost
 
@@ -61,6 +62,6 @@
     subject:          Ansible-report
     body:             System {{ ansible_hostname }} has been successfully reviewed.
     attach:
-    - "{{ inventory_hostname }}-{{ ansible_all_ipv4_addresses[0] }}.md"
+    - /tmp/{{ inventory_hostname }}-{{ ansible_all_ipv4_addresses[0] }}.md
     secure:           starttls
   delegate_to:        localhost
