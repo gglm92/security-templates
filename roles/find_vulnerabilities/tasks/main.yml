@@ -42,7 +42,7 @@
 - name:               Write output
   template:
     src:              "report.j2"
-    dest:             /tmp/{{ ansible_all_ipv4_addresses[0] }}.txt"
+    dest:             /tmp/{{ ansible_all_ipv4_addresses[0] }}.txt
 
 - name:               Send an e-mail with report
   mail:
