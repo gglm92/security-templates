@@ -1,4 +1,4 @@
-### Suspicious Files ###
+### Archivos sospechosos  ###
 {% for file in suspicious_files.files %}
 path: {{ file.path }}
 ctime: {{ file.ctime }}
@@ -8,7 +8,7 @@ mode: {{ file.mode }}
 
 {% endfor %}
 
-### Files Created in the Last {{ file_age | default('-7d') }} ###
+### Archivos creados en los últimos 7 días ###
 {% for file in recently_created_files.files %}
 path: {{ file.path }}
 ctime: {{ file.ctime }}
@@ -18,14 +18,14 @@ mode: {{ file.mode }}
 
 {% endfor %}
 
-### Rules not applied in the ssh configuration ###
+### Reglas no aplicadas en la configuración de ssh ###
 {% for rule in ssh_configurations.results %}
 {% if rule.changed %}
 Rule: {{ rule.item.line }}
 {% endif %}
 {% endfor %}
 
-### Open ports that must be closed ###
+### Puertos abiertos que deben estar cerrados ###
 {% for port in open_ports.results %}
 {% if port.changed %}
 Port {{ port.item }} open

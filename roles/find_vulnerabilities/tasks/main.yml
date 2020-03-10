@@ -38,3 +38,17 @@
   with_sequence:      start=81 end=100
   check_mode:         yes
   register:           open_ports
+
+- name:               Sending an e-mail with report
+  mail:
+    host:             smtp.office365.com
+    port:             587
+    username:         glopez@gbm.net
+    password:         "{{ my_password }}"
+    from:             glopez@gbm.net
+    to:               "{{ emails }}"
+    subject:          Reporte de seguridad - {{ ansible_all_ipv4_addresses[0] }}
+    body:             Se adjunta el reporte de la revisión de políticas de seguridad del servidor {{ ansible_all_ipv4_addresses[0] }}.
+    attach:
+    - /tmp/{{ ansible_all_ipv4_addresses[0] }}.txt
+    secure:           starttls
