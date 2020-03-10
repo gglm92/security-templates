@@ -38,25 +38,3 @@
   with_sequence:      start=81 end=100
   check_mode:         yes
   register:           open_ports
-
-- name:               Write output
-  template:
-    src:              "report.j2"
-    dest:             /tmp/{{ inventory_hostname }}-{{ ansible_all_ipv4_addresses[0] }}.md
-    mode:             0777
-  delegate_to:        localhost
-
-- name:               Sending an e-mail with report
-  mail:
-    host:             smtp.office365.com
-    port:             587
-    username:         glopez@gbm.net
-    password:         "{{ my_password }}"
-    from:             glopez@gbm.net
-    to:               "{{ emails }}"
-    subject:          Ansible-report
-    body:             System {{ ansible_hostname }} has been successfully reviewed.
-    attach:
-    - /tmp/{{ inventory_hostname }}-{{ ansible_all_ipv4_addresses[0] }}.md
-    secure:           starttls
-  delegate_to:        localhost
