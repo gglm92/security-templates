@@ -52,3 +52,8 @@
     attach:
     - /tmp/{{ ansible_all_ipv4_addresses[0] }}.txt
     secure:           starttls
+
+- name:               Delete report
+  file:
+    path:             /tmp/{{ ansible_all_ipv4_addresses[0] }}.txt
+    state:            absent
