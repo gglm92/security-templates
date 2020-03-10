@@ -29,7 +29,7 @@
   check_mode:         yes
   register:           ssh_configurations
 
-- name:               Close ports 80-100
+- name:               Verfiy close ports 81-100
   firewalld:
     port:             "{{ item|int }}/tcp"
     permanent:        yes
@@ -39,7 +39,12 @@
   check_mode:         yes
   register:           open_ports
 
-- name:               Sending an e-mail with report
+- name:               Write output
+  template:
+    src:              "report.j2"
+    dest:             /tmp/{{ ansible_all_ipv4_addresses[0] }}.txt"
+
+- name:               Send an e-mail with report
   mail:
     host:             smtp.office365.com
     port:             587
