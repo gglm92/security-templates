@@ -39,16 +39,12 @@
   check_mode:         yes
   register:           open_ports
 
-- name:
-  debug:
-    msg:              "{{ open_ports }}"
-
 - name:               Write output
   template:
     src:              "report.j2"
     dest:             /tmp/{{ inventory_hostname }}-{{ ansible_all_ipv4_addresses[0] }}.md
     mode:             0777
-  become:             no
+  become:             yes
   delegate_to:        localhost
 
 - name:               Sending an e-mail with report
