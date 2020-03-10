@@ -44,7 +44,8 @@
     src:              "report.j2"
     dest:             /tmp/{{ inventory_hostname }}-{{ ansible_all_ipv4_addresses[0] }}.md
     mode:             0777
-  become:             yes
+  become:             true
+  become_method:      sudo
   delegate_to:        localhost
 
 - name:               Sending an e-mail with report
